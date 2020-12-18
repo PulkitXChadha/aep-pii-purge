@@ -1,0 +1,97 @@
+packages:
+  __APP_PACKAGE__:
+    license: Apache-2.0 get-state-value
+    actions:
+      get-ims-token:
+        function: actions/global/get-ims-token.js
+        runtime: 'nodejs:12'
+        inputs:
+          LOG_LEVEL: debug
+          apiKey: $SERVICE_API_KEY
+          clientSecret: $CLIENT_SECRET
+          techAcctId: $TECH_ACCT_ID
+          techAcctEmail: $TECH_ACCT_EMAIL
+          privateKey: $PRIVATE_KEY
+          metaScope: $META_SCOPES
+          imsOrg: $IMS_ORG
+        annotations:
+          final: true
+      post-profile-delete-job:
+        function: actions/AEP/UnifiedProfile/ProfileJobs/post-profile-delete-job.js
+        runtime: 'nodejs:12'
+        inputs:
+          LOG_LEVEL: debug
+          apiKey: $SERVICE_API_KEY
+          imsOrg: $IMS_ORG
+          sandboxName: $SANDBOX_NAME
+          dataSetId: $DATASET_ID
+        annotations:
+          final: true
+      check-profile-job-status:
+        function: actions/AEP/UnifiedProfile/ProfileJobs/check-profile-job-status.js
+        runtime: 'nodejs:12'
+        inputs:
+          LOG_LEVEL: debug
+          apiKey: $SERVICE_API_KEY
+          imsOrg: $IMS_ORG
+        annotations:
+          final: true
+      get-batches-to-delete:
+        function: actions/AEP/Catalog/get-batches-to-delete.js
+        runtime: 'nodejs:12'
+        inputs:
+          LOG_LEVEL: debug
+          apiKey: $SERVICE_API_KEY
+          imsOrg: $IMS_ORG
+        annotations:
+          final: true
+      delete-batches:
+        function: actions/AEP/Catalog/delete-batches.js
+        runtime: 'nodejs:12'
+        inputs:
+          LOG_LEVEL: debug
+          apiKey: $SERVICE_API_KEY
+          imsOrg: $IMS_ORG
+        annotations:
+          final: true
+      stream-fake-profile-data:
+        function: actions/AEP/Data Ingestion/stream-fake-profile-data.js
+        runtime: 'nodejs:12'
+        inputs:
+          LOG_LEVEL: debug
+          apiKey: $SERVICE_API_KEY
+          imsOrg: $IMS_ORG
+          sandboxName: $SANDBOX_NAME
+          dataSetId: $DATASET_ID
+          inletUrl: $INLET_URL
+          schemaRef: $SCHEMA_REF
+        annotations:
+          final: true
+    sequences:
+      post-clean-up-job:
+        actions: post-profile-delete-job, check-profile-job-status
+      post-batch-delete-Job:
+        actions: get-batches-to-delete, delete-batches
+    triggers:
+      atMidnight:
+        feed: /whisk.system/alarms/alarm
+        inputs: 
+          cron: "0 0 * * *"
+      everyMinute:
+        feed: /whisk.system/alarms/interval
+        inputs: 
+          minutes: 1
+      everyHour:
+        feed: /whisk.system/alarms/alarm
+        inputs: 
+          cron: "0 * * * *"
+    rules:
+      atMidnightRule:
+        trigger: atMidnight
+        action: get-ims-token
+      everyMinuteRule:
+        trigger: everyMinute
+        action: stream-fake-profile-data
+      everyHourRule:
+        trigger: everyHour
+        action: post-clean-up-job
