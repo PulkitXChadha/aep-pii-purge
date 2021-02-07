@@ -12,7 +12,7 @@
     "core-js": "^3.6.4",
     "faker": "^5.1.0",
     "fs": "0.0.1-security",
-    "ngrok": "^3.3.0",
+    "ngrok": "^3.4.0",
     "openwhisk": "^3.21.3",
     "parquetjs": "^0.11.2",
     "react": "^16.13.1",
