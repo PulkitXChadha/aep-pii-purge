@@ -9,7 +9,7 @@
     "@adobe/react-spectrum": "^3.4.0",
     "@spectrum-icons/workflow": "^3.2.0",
     "cloudevents-sdk": "^1.0.0",
-    "core-js": "^3.6.4",
+    "core-js": "^3.8.3",
     "faker": "^5.1.0",
     "fs": "0.0.1-security",
     "ngrok": "^3.3.0",
