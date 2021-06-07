@@ -13,6 +13,7 @@ dist
 .env*
 *.key
 .aio*
+config
 # Adobe I/O console config
 console.json
 
@@ -27,7 +28,7 @@ junit.xml
 coverage
 .aws.tmp.creds.json
 .wskdebug.props.tmp
-
+.parcel-cache
 # OSX
 .DS_Store
 
