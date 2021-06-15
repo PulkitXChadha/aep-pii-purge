@@ -1,4 +1,4 @@
-name: MSDemo - AIO App CI
+name: Deploy to Stage
 
 
 on:
@@ -30,16 +30,16 @@ jobs:
           os: ${{ matrix.os }}
       - name: Build
         env:
-          AIO_RUNTIME_NAMESPACE: ${{ secrets.AIO_RUNTIME_NAMESPACE_STAGE_MSDemo }}
+          AIO_RUNTIME_NAMESPACE: ${{ secrets.AIO_RUNTIME_NAMESPACE_STAGE }}
         uses: adobe/aio-apps-action@1.1.0
         with:
           os: ${{ matrix.os }}
           command: build
       - name: Deploy
         env:
-          AIO_RUNTIME_NAMESPACE: ${{ secrets.AIO_RUNTIME_NAMESPACE_STAGE_MSDemo }}
-          AIO_RUNTIME_AUTH: ${{ secrets.AIO_RUNTIME_AUTH_STAGE_MSDemo }}
-          SERVICE_API_KEY: ${{ secrets.SERVICE_API_KEY_STAGE_MSDemo }}
+          AIO_RUNTIME_NAMESPACE: ${{ secrets.AIO_RUNTIME_NAMESPACE_STAGE }}
+          AIO_RUNTIME_AUTH: ${{ secrets.AIO_RUNTIME_AUTH_STAGE }}
+          SERVICE_API_KEY: ${{ secrets.SERVICE_API_KEY_STAGE }}
         uses: adobe/aio-apps-action@1.1.0
         with:
           os: ${{ matrix.os }}
