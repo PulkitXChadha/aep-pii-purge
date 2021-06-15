@@ -114,14 +114,14 @@ packages:
         feed: /whisk.system/alarms/alarm
         inputs: 
           cron: "0 0 * * *"
-      everyHour:
+      everyDayAt1am:
         feed: /whisk.system/alarms/alarm
         inputs: 
-          cron: "1 * * * *"
+          cron: "0 1 * * *"
     rules:
       atMidnightRule:
         trigger: atMidnight
         action: get-ims-token
-      everyHourRule:
-        trigger: everyHour
+      everyDayAt1amRule:
+        trigger: everyDayAt1am
         action: initiate-delete-job
