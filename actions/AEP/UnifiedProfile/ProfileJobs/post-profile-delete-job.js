@@ -71,7 +71,7 @@ async function main(params) {
     });
 
     logger.info("jobID = " + JSON.stringify(jobResponse, null, 2));
-    await state.put(`${jobResponse.ID}-profile-job`, jobResponse); // Create Profile Job ID batch state
+    await state.put(`${params.dataSetId}-profile-job`, jobResponse); // Create Profile Job ID batch state
 
     // log the response status code
     logger.info(`${jobResponse.statusCode}: successful request`);

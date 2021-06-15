@@ -125,7 +125,7 @@ async function main(params) {
     }
 
     // Update Profile Job ID batch state
-    await state.put(`${jobResponse.ID}-profile-job`, jobResponse);
+    await state.put(`${params.dataSetId}-profile-job`, jobResponse);
 
     logger.info("jobResponse = " + JSON.stringify(jobResponse, null, 2));
     const response = {

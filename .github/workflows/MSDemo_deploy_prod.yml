@@ -1,12 +1,10 @@
-name: AIO App CI
-
+name: Deploy to Prod
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [released]
 jobs:
   deploy:
-    name: Deploy to Stage
+    name: Deploy to Prod
     runs-on: ${{ matrix.os }}
     strategy:
       max-parallel: 1
@@ -23,19 +21,23 @@ jobs:
       - name: npm install
         run: npm i
       - name: Setup CLI
-        uses: adobe/aio-cli-setup-action@1.0.0
+        uses: adobe/aio-cli-setup-action@1.0.1
         with:
           os: ${{ matrix.os }}
       - name: Build
-        uses: adobe/aio-apps-action@1.0.0
+        env:
+          AIO_RUNTIME_NAMESPACE: ${{ secrets.SERVICE_API_KEY_STAGE }}
+        uses: adobe/aio-apps-action@1.1.0
         with:
           os: ${{ matrix.os }}
           command: build
-          AIO_RUNTIME_NAMESPACE: ${{ secrets.AIO_RUNTIME_NAMESPACE_STAGE }}
       - name: Deploy
-        uses: adobe/aio-apps-action@1.0.0
+        env:
+          AIO_RUNTIME_NAMESPACE: ${{ secrets.AIO_RUNTIME_NAMESPACE_PROD }}
+          AIO_RUNTIME_AUTH: ${{ secrets.AIO_RUNTIME_AUTH_PROD }}
+          SERVICE_API_KEY: ${{ secrets.SERVICE_API_KEY_PROD }}
+        uses: adobe/aio-apps-action@1.1.0
         with:
           os: ${{ matrix.os }}
-          command: deploy
-          AIO_RUNTIME_AUTH: ${{ secrets.AIO_RUNTIME_AUTH_STAGE }}
-          AIO_RUNTIME_NAMESPACE: ${{ secrets.AIO_RUNTIME_NAMESPACE_STAGE }}
+          command: Deploy
+          

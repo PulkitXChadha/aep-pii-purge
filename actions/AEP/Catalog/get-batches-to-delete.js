@@ -76,7 +76,8 @@ async function main(params) {
     // get Last Run Time
     const lastSuccessfulRun = params.lastSuccessfulRun
       ? params.lastSuccessfulRun
-      : (await state.get("lastSuccessfulRun")).value || 1559775880000;
+      : (await state.get(`${params.dataSetId}-batchDelete-lastSuccessfulRun`))
+          .value || 1559775880000;
 
     const data = await getBatchedToDelete({
       ...params,
@@ -100,7 +101,11 @@ async function main(params) {
       body: batchesToDelete,
     };
 
-    await state.put("lastSuccessfulRun", nowEpoch, { ttl: -1 }); // Update Last run time
+    await state.put(
+      `${params.dataSetId}-batchDelete-lastSuccessfulRun`,
+      nowEpoch,
+      { ttl: -1 }
+    ); // Update Last run time
 
     return { ...params, batchesToDelete: batchesToDelete };
   } catch (error) {
