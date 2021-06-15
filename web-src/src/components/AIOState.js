@@ -20,7 +20,7 @@ const AIOState = (props) => {
 
   let backCard = (
     <View>
-      <Text>{`${props.stateValue}`}</Text>
+      <Text>{`${JSON.stringify(props.stateValue)}`}</Text>
     </View>
   );
 
